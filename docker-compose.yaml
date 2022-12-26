@@ -1,0 +1,38 @@
+version: '3.3'
+services: 
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks: 
+      - sysweb-bridge
+
+  aspnetwebsite:
+    image: ${DOCKER_REGISTRY-}aspnetwebsite
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "80:80"
+    networks: 
+      - sysweb-bridge
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build:
+      context: .
+      dockerfile: WebSite/AspNetWebSite/Dockerfile
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    networks: 
+      - sysweb-bridge
+    volumes: 
+      - ./Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+networks:
+  sysweb-bridge:
+    driver: bridge
+          

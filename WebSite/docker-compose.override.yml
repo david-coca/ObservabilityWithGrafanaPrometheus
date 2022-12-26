@@ -7,6 +7,11 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "80:80"
+    networks: 
+      - sysweb-bridge
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+networks:
+  sysweb-bridge:
+     driver: bridge

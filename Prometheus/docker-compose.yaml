@@ -4,5 +4,10 @@ services:
     image: prom/prometheus
     ports:
       - "9090:9090"
+    networks: 
+      - sysweb-bridge
     volumes: 
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+networks:
+  sysweb-bridge:
+    driver: bridge

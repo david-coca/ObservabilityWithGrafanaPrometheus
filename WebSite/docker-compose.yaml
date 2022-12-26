@@ -1,8 +1,12 @@
 version: '3.4'
-
 services:
   aspnetwebsite:
     image: ${DOCKER_REGISTRY-}aspnetwebsite
+    networks: 
+      - sysweb-bridge
     build:
       context: .
       dockerfile: AspNetWebSite/Dockerfile
+networks:
+  sysweb-bridge:
+     driver: bridge
